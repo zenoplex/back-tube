@@ -1,0 +1,14 @@
+include ../partials/head
+
+block vars
+  - var head = {}
+
+doctype html
+html(lang="ja" prefix="og: http://ogp.me/ns#")
+  head
+    +head(head)
+  body
+    include ../partials/header
+    main.main
+      block contents
+    include ../partials/footer
