@@ -1,6 +1,7 @@
-# ES6 Static Website Starterkit
+# npm tubular
 
-Simple static website generator with babel, jade, sass and webpack.
+Based from Sean McCambridge's [jQuery tubular](http://seanmccambridge.com/tubular/) plugin.
+This plugin does not rely on jQuery.
 
 
 ## Project Setup
@@ -9,7 +10,7 @@ Simple static website generator with babel, jade, sass and webpack.
 
 ### Requirements
 
-- node >4.0.0
+`node >4.0.0`
 
 ## Testing
 
