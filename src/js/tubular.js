@@ -3,7 +3,8 @@ import {getSize} from './utils';
 export default class tubular {
   static defaults = {
     ratio:          16 / 9,
-    videoId:        'ZCAnLxRvNNc',
+    videoId:        'RrR90DqGD4I',
+    volume:         0,
     autohide:       0,
     autoplay:       1,
     color:          'white',
@@ -20,12 +21,13 @@ export default class tubular {
     loop:           1,
     // show/hide youtube logo
     modestbranding: 1,
-    playlist:       [],
     playsinline:    0,
     // shows relative videos
     rel:            0,
     showinfo:       0,
     start:          0,
+    // small, medium, large, hd720, hd1080, highres or default
+    quality:        'hd720'
 
     //mute:             true,
     //repeat:           true,
@@ -104,13 +106,16 @@ export default class tubular {
             iv_load_policy,
             loop,
             modestbranding,
-            playlist,
             playsinline,
             rel,
             showinfo,
             start
             } = this.options;
 
+    // looping video
+    // see https://developers.google.com/youtube/player_parameters?playerVersion=HTML5#loop
+    const playlist = [videoId];
+    const enablejsapi = 1;
 
     this.player = new YT.Player('tubular-player', {
                   width,
@@ -122,6 +127,7 @@ export default class tubular {
         color,
         controls,
         disablekb,
+        enablejsapi,
         end,
         fs,
         hl,
@@ -139,18 +145,20 @@ export default class tubular {
         'onStateChange': this.onPlayerStateChange.bind(this)
       }
     });
-
-    //
     this.playerElement = document.getElementById('tubular-player');
+    this.resize();
   }
 
   onPlayerReady(e) {
-    this.resize();
+    const {volume, quality} = this.options;
+
+    this.player.setVolume(volume);
     this.player.playVideo();
+    this.player.setPlaybackQuality('highres');
   }
 
   onPlayerStateChange(e) {
-
+    console.log(e);
   }
 
   resize(e) {
@@ -159,24 +167,19 @@ export default class tubular {
     let w;
     let h;
 
-    //this.playerElement = document.getElementById('tubular-player');
-
-    console.log(width, ratio, height);
-
     if (width / ratio < height) {
       w = Math.ceil(height * ratio);
-      console.log(this.playerElement);
-      this.playerElement.style.width = `${w}px`;
-      this.playerElement.style.height = `${height}px`;
+      h = height;
       this.playerElement.style.left = `${(width - w) / 2}px`;
       this.playerElement.style.top = 0;
+
     } else {
       h = Math.ceil(width / ratio);
-      this.playerElement.style.width = `${width}px`;
-      this.playerElement.style.height = `${h}px`;
+      w = width;
       this.playerElement.style.left = 0;
       this.playerElement.style.top = `${(height - h) / 2}px`;
     }
+    this.player.setSize(`${w}`, `${h}`);
   }
 }
 
