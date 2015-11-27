@@ -1,6 +1,6 @@
 import {getSize} from './utils';
 
-export default class Tubular {
+export default class BgTube {
 
   static defaults = {
     aspectRatio: 16 / 9,
@@ -45,13 +45,13 @@ export default class Tubular {
     this.player = null;
     this.playerElement = null;
     this.container = null;
-    this.options = {...Tubular.defaults, ...options};
+    this.options = {...BgTube.defaults, ...options};
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
 
     // if API is ready then fire up player
-    if (Tubular.apiReady) {
+    if (BgTube.apiReady) {
       this.onYouTubeIFrameAPIReady();
     } else if (!win.onYouTubeIframeAPIReady) {
       win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
@@ -101,7 +101,7 @@ export default class Tubular {
    */
   onYouTubeIFrameAPIReady() {
     // set ready flag
-    Tubular.apiReady = true;
+    BgTube.apiReady = true;
 
     const {
             videoId,

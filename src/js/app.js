@@ -1,3 +1,3 @@
-export Tubular from './tubular';
+export BgTube from './tubular';
 
 
