@@ -8,7 +8,8 @@ module.exports = {
   },
   output:  {
     path:     path.join(__dirname, './dist/'),
-    filename: '/js/[name].bundle.js'
+    filename: '/js/[name].bundle.js',
+    libraryTarget: 'umd'
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),

@@ -185,12 +185,14 @@ header {
   min-height: auto;
   text-align: center;
   color: #fff;
-  background-image: url(../img/header.jpg);
-  background-position: center;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
-  -o-background-size: cover;
+
+  .header-cover {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,.6);
+  }
+
   .header-content {
     position: relative;
     width: 100%;

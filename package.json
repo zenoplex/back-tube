@@ -44,8 +44,7 @@
   },
   "dependencies": {
     "bourbon": "^4.2.6",
-    "get-size": "^1.2.2",
-    "get-style-property": "^0.1.1",
+    "lodash.merge": "^3.3.2",
     "sanitize.css": "^3.0.0"
   },
   "engines": {
