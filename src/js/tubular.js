@@ -1,6 +1,6 @@
 import {getSize} from './utils';
 
-export default class tubular {
+export default class Tubular {
   static defaults = {
     ratio:          16 / 9,
     videoId:        'RrR90DqGD4I',
@@ -30,20 +30,30 @@ export default class tubular {
     quality:        'hd720'
   }
 
+  static apiReady = false;
 
   constructor(element = document.body, options = {}) {
     const win = window;
 
+    this.__id = Date.now();
     this.element = element;
     this.player = null;
     this.playerElement = null;
     this.container = null;
-    this.options = {...tubular.defaults, ...options};
+    this.shield = null;
+    this.options = {...Tubular.defaults, ...options};
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
 
-    win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
+    // if API is ready then fire up player
+    if (Tubular.apiReady) {
+      this.onYouTubeIFrameAPIReady();
+    } else if (!win.onYouTubeIframeAPIReady) {
+      win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
+    }
+
+
     win.addEventListener('resize', this.resize.bind(this));
   }
 
@@ -53,10 +63,10 @@ export default class tubular {
   appendContainer(element) {
     const doc = document;
     const container = `<div
-        id="tubular-container"
-        style="position: absolute; top:0; left:0; overflow:hidden; z-index: 0">
-          <div id="tubular-shield" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
-          <div id="tubular-player" style="position: absolute"></div>
+        class="tubular-container"
+        style="position: absolute; top:0; left:0; overflow:hidden; z-index:0">
+          <div class="tubular-shield" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
+          <div id="tubular-player-${this.__id}" style="position:absolute;"></div>
       </div>`;
     const div = doc.createElement('div');
     div.innerHTML = container;
@@ -64,7 +74,10 @@ export default class tubular {
     element.style.position = 'relative';
     element.insertBefore(div.firstChild, this.element.firstElementChild);
 
-    this.container = doc.getElementById('tubular-container');
+    this.container = element.querySelector('.tubular-container');
+    this.shield = element.querySelector('.tubular-shield');
+    this.playerElement = element.querySelector('.tubular-player');
+    console.log(div, element.querySelector('div'));
   }
 
   /**
@@ -82,6 +95,8 @@ export default class tubular {
 
 
   onYouTubeIFrameAPIReady() {
+    Tubular.apiReady = true;
+
     const {
             width,
             height,
@@ -105,7 +120,7 @@ export default class tubular {
 
     const enablejsapi = 1;
 
-    this.player = new YT.Player('tubular-player', {
+    this.player = new YT.Player(`tubular-player-${this.__id}`, {
                   width,
                   height,
                   videoId,
@@ -134,7 +149,7 @@ export default class tubular {
     });
 
     // playerElement reference must be set after onYouTubeIFrameAPIReady
-    this.playerElement = document.getElementById('tubular-player');
+    this.playerElement = document.getElementById(`tubular-player-${this.__id}`);
     this.resize();
   }
 
@@ -175,8 +190,6 @@ export default class tubular {
     this.player.setSize(w, h);
     this.container.style.width = `${width}px`;
     this.container.style.height = `${height}px`;
-
-
   }
 }
 
