@@ -7,7 +7,7 @@ export default class tubular {
     volume:         0,
     autohide:       0,
     autoplay:       1,
-    color:          'white',
+    color:          'red',
     controls:       0,
     disablekb:      0,
     // set end of the video
@@ -28,56 +28,48 @@ export default class tubular {
     start:          0,
     // small, medium, large, hd720, hd1080, highres or default
     quality:        'hd720'
-
-    //mute:             true,
-    //repeat:           true,
-    //width:            500,
-    //wrapperZIndex:    99,
-    //playButtonClass:  'tubular-play',
-    //pauseButtonClass: 'tubular-pause',
-    //muteButtonClass:  'tubular-mute',
-    //volumeUpClass:    'tubular-volume-up',
-    //volumeDownClass:  'tubular-volume-down',
-    //increaseVolumeBy: 10,
-    //start:            0,
-
   }
 
-  constructor(node, options = {}) {
+
+  constructor(element = document.body, options = {}) {
     const win = window;
 
+    this.element = element;
     this.player = null;
     this.playerElement = null;
+    this.container = null;
     this.options = {...tubular.defaults, ...options};
 
-    this.appendContainer();
+    this.appendContainer(this.element);
     this.appendYoutubeScript();
 
     win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
     win.addEventListener('resize', this.resize.bind(this));
   }
 
-
-  appendContainer() {
+  /**
+   * append youtube iframe
+   */
+  appendContainer(element) {
     const doc = document;
-    const container = `
-      <div
+    const container = `<div
         id="tubular-container"
-        style="overflow: hidden; position: fixed; z-index: 1; width: 100%; height: 100%">
+        style="position: absolute; top:0; left:0; overflow:hidden; z-index: 0">
+          <div id="tubular-shield" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
           <div id="tubular-player" style="position: absolute"></div>
-      </div>
-      <div id="tubular-shield" style="width: 100%; height: 100%; z-index: 2; position: absolute; left: 0; top: 0;"></div>
-      `;
+      </div>`;
     const div = doc.createElement('div');
     div.innerHTML = container;
 
-    const body = doc.body;
-    body.insertBefore(div.firstElementChild, body.firstElementChild);
+    element.style.position = 'relative';
+    element.insertBefore(div.firstChild, this.element.firstElementChild);
 
-    // keep player reference
-    //this.playerElement = doc.getElementById('tubular-player');
+    this.container = doc.getElementById('tubular-container');
   }
 
+  /**
+   * append Youtube Iframe API
+   */
   appendYoutubeScript() {
     if (!window.YT) {
       const doc = document;
@@ -94,7 +86,6 @@ export default class tubular {
             width,
             height,
             videoId,
-            ratio,
             autohide,
             autoplay,
             color,
@@ -112,9 +103,6 @@ export default class tubular {
             start
             } = this.options;
 
-    // looping video
-    // see https://developers.google.com/youtube/player_parameters?playerVersion=HTML5#loop
-    const playlist = [videoId];
     const enablejsapi = 1;
 
     this.player = new YT.Player('tubular-player', {
@@ -134,7 +122,6 @@ export default class tubular {
         iv_load_policy,
         loop,
         modestbranding,
-        playlist,
         playsinline,
         rel,
         showinfo,
@@ -145,24 +132,29 @@ export default class tubular {
         'onStateChange': this.onPlayerStateChange.bind(this)
       }
     });
+
+    // playerElement reference must be set after onYouTubeIFrameAPIReady
     this.playerElement = document.getElementById('tubular-player');
     this.resize();
   }
 
   onPlayerReady(e) {
-    const {volume, quality} = this.options;
+    const {start, quality, volume} = this.options;
 
     this.player.setVolume(volume);
+    this.player.seekTo(start);
     this.player.playVideo();
-    this.player.setPlaybackQuality('highres');
+    this.player.setPlaybackQuality(quality);
   }
 
-  onPlayerStateChange(e) {
-    console.log(e);
+  onPlayerStateChange(state) {
+    if (state.data === 0 && this.options.loop) {
+      this.player.seekTo(this.options.start);
+    }
   }
 
   resize(e) {
-    const {width, height} = getSize(window);
+    const {width, height} = getSize(this.element);
     const {ratio} = this.options;
     let w;
     let h;
@@ -176,10 +168,15 @@ export default class tubular {
     } else {
       h = Math.ceil(width / ratio);
       w = width;
+
       this.playerElement.style.left = 0;
       this.playerElement.style.top = `${(height - h) / 2}px`;
     }
-    this.player.setSize(`${w}`, `${h}`);
+    this.player.setSize(w, h);
+    this.container.style.width = `${width}px`;
+    this.container.style.height = `${height}px`;
+
+
   }
 }
 
