@@ -1,1 +1,4 @@
-console.log('app');
+import tubular from './tubular';
+export default tubular;
+
+new tubular();
