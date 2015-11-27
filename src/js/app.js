@@ -1,4 +1,3 @@
-import tubular from './tubular';
-export default tubular;
+export Tubular from './tubular';
 
-new tubular();
+
