@@ -1,4 +1,5 @@
 import {getSize} from './utils';
+import merge from 'lodash.merge';
 
 export default class BgTube {
 
@@ -45,7 +46,7 @@ export default class BgTube {
     this.player = null;
     this.playerElement = null;
     this.container = null;
-    this.options = {...BgTube.defaults, ...options};
+    this.options = merge(BgTube.defaults, options);
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
@@ -80,7 +81,6 @@ export default class BgTube {
 
     this.container = element.querySelector('.tubular-container');
     this.playerElement = element.querySelector('.tubular-player');
-    console.log(div, element.querySelector('div'));
   }
 
   /**
