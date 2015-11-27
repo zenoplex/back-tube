@@ -40,7 +40,6 @@ export default class Tubular {
     this.player = null;
     this.playerElement = null;
     this.container = null;
-    this.shield = null;
     this.options = {...Tubular.defaults, ...options};
 
     this.appendContainer(this.element);
@@ -75,7 +74,6 @@ export default class Tubular {
     element.insertBefore(div.firstChild, this.element.firstElementChild);
 
     this.container = element.querySelector('.tubular-container');
-    this.shield = element.querySelector('.tubular-shield');
     this.playerElement = element.querySelector('.tubular-player');
     console.log(div, element.querySelector('div'));
   }
