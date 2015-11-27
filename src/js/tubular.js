@@ -2,22 +2,43 @@ import {getSize} from './utils';
 
 export default class tubular {
   static defaults = {
-    ratio:            16 / 9,
-    videoId:          'ZCAnLxRvNNc',
-    mute:             true,
-    repeat:           true,
-    width:            500,
-    wrapperZIndex:    99,
-    playButtonClass:  'tubular-play',
-    pauseButtonClass: 'tubular-pause',
-    muteButtonClass:  'tubular-mute',
-    volumeUpClass:    'tubular-volume-up',
-    volumeDownClass:  'tubular-volume-down',
-    increaseVolumeBy: 10,
-    start:            0,
-    end:              false,
-    videoQuality:     'hd1080',
-    relatedVideos:    0
+    ratio:          16 / 9,
+    videoId:        'ZCAnLxRvNNc',
+    autohide:       0,
+    autoplay:       1,
+    color:          'white',
+    controls:       0,
+    disablekb:      0,
+    // set end of the video
+    end:            0,
+    // display fullscreen button
+    fs:             0,
+    // interface language
+    hl:             null,
+    iv_load_policy: 3,
+    // loop video flag
+    loop:           1,
+    // show/hide youtube logo
+    modestbranding: 1,
+    playlist:       [],
+    playsinline:    0,
+    // shows relative videos
+    rel:            0,
+    showinfo:       0,
+    start:          0,
+
+    //mute:             true,
+    //repeat:           true,
+    //width:            500,
+    //wrapperZIndex:    99,
+    //playButtonClass:  'tubular-play',
+    //pauseButtonClass: 'tubular-pause',
+    //muteButtonClass:  'tubular-mute',
+    //volumeUpClass:    'tubular-volume-up',
+    //volumeDownClass:  'tubular-volume-down',
+    //increaseVolumeBy: 10,
+    //start:            0,
+
   }
 
   constructor(node, options = {}) {
@@ -25,7 +46,7 @@ export default class tubular {
 
     this.player = null;
     this.playerElement = null;
-    this.options = Object.assign({}, tubular.defaults, options);
+    this.options = {...tubular.defaults, ...options};
 
     this.appendContainer();
     this.appendYoutubeScript();
@@ -67,11 +88,53 @@ export default class tubular {
 
 
   onYouTubeIFrameAPIReady() {
+    const {
+            width,
+            height,
+            videoId,
+            ratio,
+            autohide,
+            autoplay,
+            color,
+            controls,
+            disablekb,
+            end,
+            fs,
+            hl,
+            iv_load_policy,
+            loop,
+            modestbranding,
+            playlist,
+            playsinline,
+            rel,
+            showinfo,
+            start
+            } = this.options;
+
+
     this.player = new YT.Player('tubular-player', {
-      height:  '390',
-      width:   '640',
-      videoId: 'RrR90DqGD4I',
-      events:  {
+                  width,
+                  height,
+                  videoId,
+      playerVars: {
+        autohide,
+        autoplay,
+        color,
+        controls,
+        disablekb,
+        end,
+        fs,
+        hl,
+        iv_load_policy,
+        loop,
+        modestbranding,
+        playlist,
+        playsinline,
+        rel,
+        showinfo,
+        start
+      },
+      events:     {
         'onReady':       this.onPlayerReady.bind(this),
         'onStateChange': this.onPlayerStateChange.bind(this)
       }
