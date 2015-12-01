@@ -11,8 +11,8 @@
     "webpack": "webpack --hot --inline",
     "webpack:build": "npm run webpack -- --config webpack.config.production.js",
     "webpack:watch": "npm run webpack -- --watch",
-    "watch": "npm run clean && parallelshell 'npm run jade:watch' 'npm run sass:watch' 'npm run webpack:watch' 'npm run browsersync'",
-    "build": "npm run clean && parallelshell 'npm run jade' 'npm run sass:build' 'npm run webpack:build'",
+    "watch": "npm run clean && parallelshell 'npm run webpack:watch' 'npm run browsersync'",
+    "build": "npm run clean && parallelshell 'npm run webpack:build'",
     "build:lib": "babel src/js -d lib",
     "prepublish": "npm run clean:lib && npm run build:lib"
   },
