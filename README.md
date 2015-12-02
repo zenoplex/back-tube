@@ -1,8 +1,9 @@
-# BgTube
+# back-tube
 
 Based from Sean McCambridge's [jQuery tubular](http://seanmccambridge.com/tubular/) plugin.
 This plugin does not rely on jQuery.
 
+Checkout the [DEMO](http://zenoplex.github.io/back-tube/)
 
 ## Project Setup
 
@@ -12,10 +13,6 @@ This plugin does not rely on jQuery.
 
 `node >=4.x.x`
 
-## Testing
-
-_TBD_
-
 ## Development
 
 `npm run watch`
@@ -24,30 +21,50 @@ _TBD_
 
 `npm run build`
 
-## Troubleshooting & Useful Tools
+## Testing
 
+_TBD_
 
 ## Usage
 
-Basic Usage
+_Basic Usage_
 
 ```js
-var BgTube = require('bg-tube');
+var BackTube = require('back-tube');
 
-new BgTube(document.querySelector('#about'), {
+new BackTube(document.querySelector('#about'), {
   videoId: 'sGbxmsDFVnE'
 });
 ```
 
-Advanced options
+_Advanced options_
+
+See [YouTube IFRAME Player API](https://developers.google.com/youtube/player_parameters) for details.
 
 ```js
-var BgTube = require('bg-tube');
+var BackTube = require('back-tube');
 
-new BgTube(document.querySelector('#about'), {
+new BackTube(document.querySelector('#about'), {
   videoId: 'sGbxmsDFVnE',
   playerSettings: {
-    quality: 'highres'
+    volume:         0, // 0 - 100
+    autohide:       0, // autohide controls
+    autoplay:       1, // autoplay on load
+    color:          'red', // red, white
+    controls:       0, // show control UI
+    disablekb:      0, // enable/disable keyboard control
+    enablejsapi:    1,
+    fs:             0, // display fullscreen button
+    hl:             null, // interface language
+    iv_load_policy: 3,
+    loop:           1, // loop video flag (doesn't work properly)
+    modestbranding: 1, // show/hide youtube logo
+    playsinline:    0,
+    rel:            0, // shows relative videos
+    showinfo:       0,
+    start:          0, // set beginning of the video
+    end:            0, // set end of the video
+    quality:        'hd720'
   }
 });
 ```
