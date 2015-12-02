@@ -1,1 +1,3 @@
-export BackTube from './BackTube';
+import BackTube from './BackTube';
+module.exports = BackTube;
+
