@@ -13,14 +13,13 @@
   "scripts": {
     "clean": "rimraf lib dist",
     "browsersync": "browser-sync start --server --files 'dist/css/**/*.css, dist/**/*.html, dist/**/*.js'",
-    "webpack": "webpack --hot --inline",
-    "webpack:build": "npm run webpack -- --config webpack.config.production.js",
-    "webpack:watch": "npm run webpack -- --watch",
+    "webpack:build": "webpack --config webpack.config.production.js",
+    "webpack:watch": "webpack --hot --inline --watch",
     "watch": "npm run clean && parallelshell 'npm run webpack:watch' 'npm run browsersync'",
     "build:umd": "parallelshell 'npm run webpack:build'",
     "build:lib": "babel src/js -d lib",
     "build": "npm run build:lib && npm run build:umd",
-    "prepublish": "npm run clean && npm run build:lib",
+    "prepublish": "npm run clean && npm run build",
     "gh-pages": "npm run build && mkdir ghpages && cp index.html ghpages && cp -R assets ghpages && cp -R dist ghpages && gh-pages -d ghpages && rimraf ghpages"
   },
   "keywords": [
