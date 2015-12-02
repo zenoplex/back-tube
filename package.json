@@ -1,5 +1,5 @@
 {
-  "name": "BgTube",
+  "name": "back-tube",
   "version": "0.0.1",
   "description": "Display YouTube video as background in any element.",
   "author": "zenoplex",
@@ -7,7 +7,7 @@
   "jsnext:main": "src/index.js",
   "scripts": {
     "clean": "rimraf lib dist",
-    "browsersync": "browser-sync start --server dist --files 'dist/css/**/*.css, dist/**/*.html, dist/**/*.js'",
+    "browsersync": "browser-sync start --server --files 'dist/css/**/*.css, dist/**/*.html, dist/**/*.js'",
     "webpack": "webpack --hot --inline",
     "webpack:build": "npm run webpack -- --config webpack.config.production.js",
     "webpack:watch": "npm run webpack -- --watch",
@@ -51,6 +51,6 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/zenoplex/static-website-starterkit"
+    "url": "https://github.com/zenoplex/back-tube"
   }
 }
