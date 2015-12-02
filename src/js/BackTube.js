@@ -1,7 +1,7 @@
 import {getSize} from './utils';
 import merge from 'lodash.merge';
 
-export default class BgTube {
+export default class BackTube {
 
   static defaults = {
     aspectRatio: 16 / 9,
@@ -46,13 +46,13 @@ export default class BgTube {
     this.player = null;
     this.playerElement = null;
     this.container = null;
-    this.options = merge(BgTube.defaults, options);
+    this.options = merge(BackTube.defaults, options);
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
 
     // if API is ready then fire up player
-    if (BgTube.apiReady) {
+    if (BackTube.apiReady) {
       this.onYouTubeIFrameAPIReady();
     } else if (!win.onYouTubeIframeAPIReady) {
       win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
@@ -101,7 +101,7 @@ export default class BgTube {
    */
   onYouTubeIFrameAPIReady() {
     // set ready flag
-    BgTube.apiReady = true;
+    BackTube.apiReady = true;
 
     const {
             videoId,

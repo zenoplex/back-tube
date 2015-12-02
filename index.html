@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"/>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/styles/github-gist.min.css"/>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="assets/style.css"/>
   <meta name="description" content="description for index html"/>
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
 </head>
@@ -15,7 +15,7 @@
   <nav id="mainNav" class="navbar navbar-default navbar-fixed-top affix">
     <div class="container-fluid">
       <div class="navbar-header">
-        <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#page-top" class="navbar-brand page-scroll">BgTube</a>
+        <button type="button" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" class="navbar-toggle collapsed"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button><a href="#page-top" class="navbar-brand page-scroll">BackTube</a>
       </div>
       <div id="bs-example-navbar-collapse-1" class="collapse navbar-collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -29,7 +29,7 @@
     <div class="header-content">
       <div class="header-content-inner"><h1>Your Favorite YouTube Video as a Background</h1>
         <hr>
-        <p>BgTube takes a single video from YouTube and injects it as a background on any element.</p>
+        <p>BackTube takes a single video from YouTube and injects it as a background on any element.</p>
         <a href="#about" class="btn btn-primary btn-xl page-scroll">Find Out More</a></div>
     </div>
   </header>
@@ -40,7 +40,7 @@
           <div class="col-lg-8 col-lg-offset-2 text-center"><h2 class="section-heading">Youtube as background on the
             fly!</h2>
             <hr class="light">
-            <p class="text-faded">BgTube is capable to set element's background to video with no hassle. Just load the
+            <p class="text-faded">BackTube is capable to set element's background to video with no hassle. Just load the
               script and instantiate then you're done.</p><a id="about__btn" href="#" class="btn btn-default btn-xl">Set
               Video to background</a></div>
         </div>
@@ -64,7 +64,7 @@
 
 <pre><code>// shows background video to #video element
 var element = document.getElementById('video');
-new BgTube(element, 'some_video_id');</code></pre>
+new BackTube(element, 'some_video_id');</code></pre>
         </div>
 
         <div>
@@ -72,7 +72,7 @@ new BgTube(element, 'some_video_id');</code></pre>
           <p>Video id is the value of `v` key in any YouTube video URL.  ie) https://www.youtube.com/watch?v=EKyirtVHsK0</p>
 
 <pre><code>// shows background video to #video element
-new BgTube(document.querySelector('#vid'), 'some_video_id');
+new BackTube(document.querySelector('#vid'), 'some_video_id');
 </code></pre>
 
         </div>
@@ -89,13 +89,13 @@ new BgTube(document.querySelector('#vid'), 'some_video_id');
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.9.1/highlight.min.js"></script>
   <script>hljs.initHighlightingOnLoad();</script>
-  <script src="../dist/index.bundle.js"></script>
-  <script>new BgTube(document.querySelector('header'));
+  <script src="./dist/index.bundle.js"></script>
+  <script>new BackTube(document.querySelector('header'));
 
   document.querySelector('#about__btn').addEventListener('click', function (e) {
     e.preventDefault();
 
-    new BgTube(document.querySelector('#about'), {
+    new BackTube(document.querySelector('#about'), {
       videoId:        'sGbxmsDFVnE',
       playerSettings: {
         quality: 'highres'
