@@ -8,7 +8,7 @@ module.exports = {
   },
   output:  {
     path:     path.join(__dirname, './dist/'),
-    filename: '/js/[name].bundle.js',
+    filename: '[name].bundle.js',
     libraryTarget: 'umd'
   },
   plugins: [
