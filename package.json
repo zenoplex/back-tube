@@ -13,8 +13,8 @@
   "scripts": {
     "clean": "rimraf lib dist",
     "browsersync": "browser-sync start --server --files 'dist/css/**/*.css, dist/**/*.html, dist/**/*.js'",
-    "webpack:build": "webpack --config webpack.config.production.js",
-    "webpack:watch": "webpack --hot --inline --watch",
+    "webpack:build": "webpack src/index.js dist/backtube.js --config webpack.config.production.js",
+    "webpack:watch": "webpack src/index.js dist/backtube.js --hot --inline --watch",
     "watch": "npm run clean && parallelshell 'npm run webpack:watch' 'npm run browsersync'",
     "build:umd": "parallelshell 'npm run webpack:build'",
     "build:lib": "babel src -d lib",
