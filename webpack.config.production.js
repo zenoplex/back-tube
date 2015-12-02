@@ -4,7 +4,7 @@ var path = require('path');
 
 module.exports = {
   entry:   {
-    index: ['./src/js/index.js']
+    index: ['./src/index.js']
   },
   output:  {
     path:     path.join(__dirname, './dist/'),

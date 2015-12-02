@@ -17,7 +17,7 @@
     "webpack:watch": "webpack --hot --inline --watch",
     "watch": "npm run clean && parallelshell 'npm run webpack:watch' 'npm run browsersync'",
     "build:umd": "parallelshell 'npm run webpack:build'",
-    "build:lib": "babel src/js -d lib",
+    "build:lib": "babel src -d lib",
     "build": "npm run build:lib && npm run build:umd",
     "prepublish": "npm run clean && npm run build",
     "gh-pages": "npm run build && mkdir ghpages && cp index.html ghpages && cp -R assets ghpages && cp -R dist ghpages && gh-pages -d ghpages && rimraf ghpages"
