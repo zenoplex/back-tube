@@ -1,27 +1,24 @@
 {
-  "name": "static-website-starterkit",
+  "name": "BgTube",
   "version": "0.0.1",
-  "description": "static website starterkit with jade, sass and webpack",
+  "description": "Display YouTube video as background in any element.",
   "author": "zenoplex",
-  "main": "npm run watch",
+  "main": "lib/index.js",
+  "jsnext:main": "src/index.js",
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rimraf lib dist",
     "browsersync": "browser-sync start --server dist --files 'dist/css/**/*.css, dist/**/*.html, dist/**/*.js'",
-    "jade": "jade src/jade/pages/*.jade --out dist -O \"`yaml2json src/data/site.yaml`\"",
-    "jade:watch": "npm run jade -- -w",
-    "sass": "node-sass src/sass/*.scss -o dist/css --include-path node_modules/sanitize.css --include-path node_modules/bourbon/app/assets/stylesheets",
-    "sass:watch": "npm run sass && npm run sass -- -w",
-    "sass:build": "npm run sass && postcss -u autoprefixer -u cssnano -d dist/css dist/css/*.css",
     "webpack": "webpack --hot --inline",
     "webpack:build": "npm run webpack -- --config webpack.config.production.js",
     "webpack:watch": "npm run webpack -- --watch",
-    "watch": "npm run clean && parallelshell 'npm run jade:watch' 'npm run sass:watch' 'npm run webpack:watch' 'npm run browsersync'",
-    "build": "npm run clean && parallelshell 'npm run jade' 'npm run sass:build' 'npm run webpack:build'"
+    "watch": "npm run clean && parallelshell 'npm run webpack:watch' 'npm run browsersync'",
+    "build": "npm run clean && parallelshell 'npm run webpack:build'",
+    "build:lib": "babel src/js -d lib",
+    "prepublish": "npm run clean:lib && npm run build:lib"
   },
   "keywords": [
+    "YouTube",
     "babel",
-    "jade",
-    "sass",
     "webpack"
   ],
   "devDependencies": {
@@ -38,6 +35,7 @@
     "parallelshell": "^2.0.0",
     "path": "^0.12.7",
     "postcss-cli": "^2.3.2",
+    "rimraf": "^2.4.4",
     "webpack": "^1.12.9",
     "webpack-dev-server": "^1.14.0",
     "yaml2json": "^1.0.2"
