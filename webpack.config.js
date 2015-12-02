@@ -3,13 +3,9 @@ var webpack = require('webpack');
 var path = require('path');
 
 module.exports = {
-  entry:   {
-    index: ['./src/js/index.js']
-  },
   output:  {
-    path:     path.join(__dirname, './dist/'),
-    filename: '[name].bundle.js',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    library: 'BackTube'
   },
   devtool: 'inline-source-map',
   plugins: [
@@ -18,7 +14,7 @@ module.exports = {
            ],
   module:  {
     loaders: [
-      {test: /\.jsx?$/, loader: 'babel', include: path.join(__dirname, './src/js')}
+      {test: /\.jsx?$/, loader: 'babel', include: path.join(__dirname, './src')}
     ]
   }
 };
