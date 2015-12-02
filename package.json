@@ -14,7 +14,7 @@
     "watch": "npm run clean && parallelshell 'npm run webpack:watch' 'npm run browsersync'",
     "build": "npm run clean && parallelshell 'npm run webpack:build'",
     "build:lib": "babel src/js -d lib",
-    "prepublish": "npm run clean:lib && npm run build:lib"
+    "prepublish": "npm run clean && npm run build:lib"
   },
   "keywords": [
     "YouTube",
