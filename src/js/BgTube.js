@@ -90,7 +90,7 @@ export default class BgTube {
     if (!window.YT) {
       const doc = document;
       const tag = doc.createElement('script');
-      tag.src = '//www.youtube.com/iframe_api';
+      tag.src = 'https://www.youtube.com/iframe_api';
       const firstScriptTag = doc.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
