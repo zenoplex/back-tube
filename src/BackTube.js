@@ -6,7 +6,7 @@ export default class BackTube {
 
   static defaults = {
     aspectRatio: 16 / 9,
-    videoId:     'RrR90DqGD4I',
+    videoId:     null,
 
     playerSettings: {
       volume:         0, // 0 - 100
@@ -26,9 +26,9 @@ export default class BackTube {
       showinfo:       0,
       start:          0, // set beginning of the video
       end:            0, // set end of the video
-      quality:        'hd720' // small, medium, large, hd720, hd1080, highres or default
+      quality:        'default' // small, medium, large, hd720, hd1080, highres or default
     },
-    cover: 'rgba(0,0,0, .5)'
+    cover: 'rgba(0,0,0, .4)'
   };
 
   // flag for YoutubeAPI ready
@@ -51,6 +51,8 @@ export default class BackTube {
     this.options = merge(BackTube.defaults, options);
 
     const { videoId, cover } = this.options;
+
+    if(!videoId) { throw new Error(`videoId`); }
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
