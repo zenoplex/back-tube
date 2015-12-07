@@ -26,7 +26,8 @@ export default class BackTube {
       start:          0, // set beginning of the video
       end:            0, // set end of the video
       quality:        'hd720' // small, medium, large, hd720, hd1080, highres or default
-    }
+    },
+    cover: 'rgba(0,0,0, .5)'
   };
 
   // flag for YoutubeAPI ready
@@ -48,8 +49,11 @@ export default class BackTube {
     this.container = null;
     this.options = merge(BackTube.defaults, options);
 
+    const { cover } = this.options;
+
     this.appendContainer(this.element);
     this.appendYoutubeScript();
+    this.setCoverColor(cover);
 
     // if API is ready then fire up player
     if (BackTube.apiReady) {
@@ -81,6 +85,7 @@ export default class BackTube {
 
     this.container = element.querySelector('.tubular-container');
     this.playerElement = element.querySelector('.tubular-player');
+    this.cover = element.querySelector('.tubular-shield');
   }
 
   /**
@@ -196,6 +201,15 @@ export default class BackTube {
     // update container size
     this.container.style.width = `${width}px`;
     this.container.style.height = `${height}px`;
+  }
+
+  /**
+   * update cover color
+   *
+   * @param {string} color  css color
+   */
+  setCoverColor(color) {
+    this.cover.style.backgroundColor = color;
   }
 }
 
