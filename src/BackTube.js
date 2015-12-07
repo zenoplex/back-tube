@@ -72,10 +72,10 @@ export default class BackTube {
   appendContainer(element) {
     const doc = document;
     const container = `<div
-        class="tubular-container"
+        class="backtube-container"
         style="position: absolute; top:0; left:0; overflow:hidden; z-index:0">
-          <div class="tubular-shield" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
-          <div id="tubular-player-${this.__id}" style="position:absolute;"></div>
+          <div class="backtube-shield" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
+          <div id="backtube-player-${this.__id}" style="position:absolute;"></div>
       </div>`;
     const div = doc.createElement('div');
     div.innerHTML = container;
@@ -83,9 +83,9 @@ export default class BackTube {
     element.style.position = 'relative';
     element.insertBefore(div.firstChild, this.element.firstElementChild);
 
-    this.container = element.querySelector('.tubular-container');
-    this.playerElement = element.querySelector('.tubular-player');
-    this.cover = element.querySelector('.tubular-shield');
+    this.container = element.querySelector('.backtube-container');
+    this.playerElement = element.querySelector('.backtube-player');
+    this.cover = element.querySelector('.backtube-shield');
   }
 
   /**
@@ -113,7 +113,7 @@ export default class BackTube {
             playerSettings
             } = this.options;
 
-    this.player = new YT.Player(`tubular-player-${this.__id}`, {
+    this.player = new YT.Player(`backtube-player-${this.__id}`, {
                   width: 0, // width will auto fit to element
                   height: 0, // height will auto fit to element
                   videoId,
@@ -127,7 +127,7 @@ export default class BackTube {
     ;
 
     // playerElement reference must be set after onYouTubeIFrameAPIReady
-    this.playerElement = document.getElementById(`tubular-player-${this.__id}`);
+    this.playerElement = document.getElementById(`backtube-player-${this.__id}`);
     this.resize();
   }
 
