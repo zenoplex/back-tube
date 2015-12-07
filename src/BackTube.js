@@ -1,5 +1,6 @@
 import {getSize} from './utils';
 import merge from 'lodash.merge';
+import platform from 'platform';
 
 export default class BackTube {
 
@@ -49,19 +50,27 @@ export default class BackTube {
     this.container = null;
     this.options = merge(BackTube.defaults, options);
 
-    const { cover } = this.options;
+    const { videoId, cover } = this.options;
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
     this.setCoverColor(cover);
 
-    // if API is ready then fire up player
-    if (BackTube.apiReady) {
-      this.onYouTubeIFrameAPIReady();
-    } else if (!win.onYouTubeIframeAPIReady) {
-      win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
+    if (/iOS/.test(platform.os)) {
+      const img = document.createElement('img');
+      img.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+      img.style.width = '100%';
+      img.style.height = '100%';
+      this.playerElement.appendChild(img);
+      this.resize();
+    } else {
+      // if API is ready then fire up player
+      if (BackTube.apiReady) {
+        this.onYouTubeIFrameAPIReady();
+      } else if (!win.onYouTubeIframeAPIReady) {
+        win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
+      }
     }
-
     // add window resize event
     win.addEventListener('resize', this.resize.bind(this));
   }
@@ -84,7 +93,7 @@ export default class BackTube {
     element.insertBefore(div.firstChild, this.element.firstElementChild);
 
     this.container = element.querySelector('.backtube-container');
-    this.playerElement = element.querySelector('.backtube-player');
+    this.playerElement = element.querySelector(`#backtube-player-${this.__id}`);
     this.cover = element.querySelector('.backtube-cover');
   }
 
@@ -114,8 +123,8 @@ export default class BackTube {
             } = this.options;
 
     this.player = new YT.Player(`backtube-player-${this.__id}`, {
-                  width: 0, // width will auto fit to element
-                  height: 0, // height will auto fit to element
+      width:      0, // width will auto fit to element
+      height:     0, // height will auto fit to element
                   videoId,
       playerVars: playerSettings,
       events:     {
@@ -197,7 +206,8 @@ export default class BackTube {
       this.playerElement.style.top = `${(height - h) / 2}px`;
     }
     // update player size
-    this.player.setSize(w, h);
+    this.playerElement.style.width = `${w}px`;
+    this.playerElement.style.height = `${h}px`;
     // update container size
     this.container.style.width = `${width}px`;
     this.container.style.height = `${height}px`;
@@ -212,4 +222,3 @@ export default class BackTube {
     this.cover.style.backgroundColor = color;
   }
 }
-
