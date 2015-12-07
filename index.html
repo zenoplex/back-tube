@@ -99,13 +99,15 @@ new BackTube(document.querySelector('#vid'), 'some_video_id');
   <script>hljs.initHighlightingOnLoad();</script>
   <script src="./dist/backtube.js"></script>
   <script>
-    new BackTube(document.querySelector('header'));
+    new BackTube(document.querySelector('header'), {
+      videoId: 'Zn6PBAzMLAk'
+    });
 
     document.querySelector('#about__btn').addEventListener('click', function (e) {
       e.preventDefault();
 
       new BackTube(document.querySelector('#about'), {
-        videoId:        'sGbxmsDFVnE',
+        videoId:        'ok2PswD9uYs',
         playerSettings: {
           quality: 'highres'
         }
