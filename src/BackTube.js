@@ -74,7 +74,7 @@ export default class BackTube {
     const container = `<div
         class="backtube-container"
         style="position: absolute; top:0; left:0; overflow:hidden; z-index:0">
-          <div class="backtube-shield" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
+          <div class="backtube-cover" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
           <div id="backtube-player-${this.__id}" style="position:absolute;"></div>
       </div>`;
     const div = doc.createElement('div');
@@ -85,7 +85,7 @@ export default class BackTube {
 
     this.container = element.querySelector('.backtube-container');
     this.playerElement = element.querySelector('.backtube-player');
-    this.cover = element.querySelector('.backtube-shield');
+    this.cover = element.querySelector('.backtube-cover');
   }
 
   /**
