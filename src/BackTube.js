@@ -26,7 +26,8 @@ export default class BackTube {
       start:          0, // set beginning of the video
       end:            0, // set end of the video
       quality:        'hd720' // small, medium, large, hd720, hd1080, highres or default
-    }
+    },
+    cover: 'rgba(0,0,0, .5)'
   };
 
   // flag for YoutubeAPI ready
@@ -48,8 +49,11 @@ export default class BackTube {
     this.container = null;
     this.options = merge(BackTube.defaults, options);
 
+    const { cover } = this.options;
+
     this.appendContainer(this.element);
     this.appendYoutubeScript();
+    this.setCoverColor(cover);
 
     // if API is ready then fire up player
     if (BackTube.apiReady) {
@@ -68,10 +72,10 @@ export default class BackTube {
   appendContainer(element) {
     const doc = document;
     const container = `<div
-        class="tubular-container"
+        class="backtube-container"
         style="position: absolute; top:0; left:0; overflow:hidden; z-index:0">
-          <div class="tubular-shield" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
-          <div id="tubular-player-${this.__id}" style="position:absolute;"></div>
+          <div class="backtube-cover" style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
+          <div id="backtube-player-${this.__id}" style="position:absolute;"></div>
       </div>`;
     const div = doc.createElement('div');
     div.innerHTML = container;
@@ -79,8 +83,9 @@ export default class BackTube {
     element.style.position = 'relative';
     element.insertBefore(div.firstChild, this.element.firstElementChild);
 
-    this.container = element.querySelector('.tubular-container');
-    this.playerElement = element.querySelector('.tubular-player');
+    this.container = element.querySelector('.backtube-container');
+    this.playerElement = element.querySelector('.backtube-player');
+    this.cover = element.querySelector('.backtube-cover');
   }
 
   /**
@@ -108,7 +113,7 @@ export default class BackTube {
             playerSettings
             } = this.options;
 
-    this.player = new YT.Player(`tubular-player-${this.__id}`, {
+    this.player = new YT.Player(`backtube-player-${this.__id}`, {
                   width: 0, // width will auto fit to element
                   height: 0, // height will auto fit to element
                   videoId,
@@ -122,7 +127,7 @@ export default class BackTube {
     ;
 
     // playerElement reference must be set after onYouTubeIFrameAPIReady
-    this.playerElement = document.getElementById(`tubular-player-${this.__id}`);
+    this.playerElement = document.getElementById(`backtube-player-${this.__id}`);
     this.resize();
   }
 
@@ -196,6 +201,15 @@ export default class BackTube {
     // update container size
     this.container.style.width = `${width}px`;
     this.container.style.height = `${height}px`;
+  }
+
+  /**
+   * update cover color
+   *
+   * @param {string} color  css color
+   */
+  setCoverColor(color) {
+    this.cover.style.backgroundColor = color;
   }
 }
 
