@@ -36,12 +36,27 @@
     <section id="about" class="bg-primary">
       <div class="container">
         <div class="row">
-          <div class="col-lg-8 col-lg-offset-2 text-center"><h2 class="section-heading">Youtube as background on the
-            fly!</h2>
-            <hr class="light">
-            <p class="text-faded">BackTube is capable to set element's background to video with no hassle. Just load the
-              script and instantiate then you're done.</p><a id="about__btn" href="#" class="btn btn-default btn-xl">Set
-              Video to background</a></div>
+          <div class="col-lg-8 col-lg-offset-2 text-center">
+            <div class="row">
+              <div class="col-lg-12">
+                <h2 class="section-heading">Youtube as background on the fly!</h2>
+                <hr class="light">
+                <p class="text-faded">BackTube is capable to set element's background to video with no hassle. Just load the
+                  script and instantiate then you're done.</p>
+
+                <button id="about__btn" href="#" class="btn btn-default btn-xl">Set Video to background</button>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="btn-group btn-controls">
+                  <button class="btn btn-primary btn-controls__play">play</button>
+                  <button class="btn btn-primary btn-controls__pause">pause</button>
+                  <button class="btn btn-primary btn-controls__stop">stop</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -103,15 +118,29 @@ new BackTube(document.querySelector('#vid'), 'some_video_id');
       videoId: 'Zn6PBAzMLAk'
     });
 
-    document.querySelector('#about__btn').addEventListener('click', function (e) {
+    $('#about__btn').on('click', function(e){
       e.preventDefault();
 
-      new BackTube(document.querySelector('#about'), {
+      var player = new BackTube(document.querySelector('#about'), {
         videoId:        'ok2PswD9uYs',
         playerSettings: {
           quality: 'highres'
         }
       });
+
+      $('.btn-controls__play').on('click', function(){
+        player.play();
+      });
+
+      $('.btn-controls__pause').on('click', function(){
+        player.pause();
+      });
+
+      $('.btn-controls__stop').on('click', function(){
+        player.stop();
+      });
+
+
     });
   </script>
 </body>
