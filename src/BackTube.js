@@ -28,7 +28,7 @@ export default class BackTube {
       end:            0, // set end of the video
       quality:        'default' // small, medium, large, hd720, hd1080, highres or default
     },
-    cover: 'rgba(0,0,0, .4)'
+    cover:          'rgba(0,0,0, .4)'
   };
 
   // flag for YoutubeAPI ready
@@ -52,7 +52,7 @@ export default class BackTube {
 
     const { videoId, cover } = this.options;
 
-    if(!videoId) { throw new Error(`videoId`); }
+    if (!videoId) { throw new Error(`videoId`); }
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
@@ -222,5 +222,53 @@ export default class BackTube {
    */
   setCoverColor(color) {
     this.cover.style.backgroundColor = color;
+  }
+
+  /**
+   * returns true if player is ready and can be controlled
+   *
+   * @returns {boolean|*}
+   */
+  isPlayerReady() {
+    return BackTube.apiReady && this.player;
+  }
+
+
+  /**
+   * plays video
+   */
+  play() {
+    if (this.isPlayerReady()) {
+      this.player.playVideo();
+    }
+  }
+
+  /**
+   * pauses currently playing video
+   */
+  pause() {
+    if (this.isPlayerReady()) {
+      this.player.pauseVideo();
+    }
+  }
+
+  /**
+   * stops and cancels loading of current video
+   */
+  stop() {
+    if(this.isPlayerReady()){
+      this.player.stopVideo();
+    }
+  }
+
+  /**
+   * seeks ti a specified time in the video
+   *
+   * @param seconds
+   */
+  seekTo(seconds = 0) {
+    if (this.isPlayerReady()) {
+      this.player.seekTo(seconds)
+    }
   }
 }
