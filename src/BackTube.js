@@ -256,7 +256,7 @@ export default class BackTube {
    * stops and cancels loading of current video
    */
   stop() {
-    if(this.isPlayerReady()){
+    if (this.isPlayerReady()) {
       this.player.stopVideo();
     }
   }
@@ -269,6 +269,35 @@ export default class BackTube {
   seekTo(seconds = 0) {
     if (this.isPlayerReady()) {
       this.player.seekTo(seconds)
+    }
+  }
+
+  /**
+   * mute player volume
+   */
+  mute() {
+    if (this.isPlayerReady()) {
+      this.player.mute();
+    }
+  }
+
+  /**
+   * unMute player volumn
+   */
+  unMute() {
+    if (this.isPlayerReady()) {
+      this.player.unMute();
+    }
+  }
+
+  /**
+   * set player volume
+   *
+   * @param {Number} volume integer between 0 to 100
+   */
+  setVolume(volume) {
+    if (this.isPlayerReady()) {
+      this.player.setVolume(volume);
     }
   }
 }
