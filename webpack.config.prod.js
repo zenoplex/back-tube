@@ -6,20 +6,26 @@ const TransferWebpackPlugin = require('transfer-webpack-plugin');
 module.exports = {
   entry: {
     app: [
-      'webpack-hot-middleware/client',
       './src/index',
     ],
   },
   output: {
-    path: '/',
+    path: './dist',
     filename: '[name].bundle.js',
     libraryTarget: 'umd',
     library: 'BackTube',
   },
-  devtool: 'cheap-module-inline-eval-source-map',
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': { NODE_ENV: JSON.stringify('production') },
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        drop_console: true,
+        warnings: false,
+      },
+    }),
     new HtmlWebpackPlugin({
       filename: 'index.html',
       template: 'index.html',
@@ -32,7 +38,7 @@ module.exports = {
   ],
   module: {
     loaders: [
-      { test: /\.js/, loader: 'babel', include: path.resolve(__dirname, './src') },
+      { test: /\.js$/, loader: 'babel', include: path.resolve(__dirname, './src') },
     ],
   },
   resolve: {
