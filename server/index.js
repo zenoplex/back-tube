@@ -1,6 +1,5 @@
 const express = require('express');
 const webpack = require('webpack');
-const path = require('path');
 const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const config = require('../webpack.config');
@@ -9,9 +8,9 @@ const app = express();
 const compiler = webpack(config);
 
 app.use(webpackDevMiddleware(compiler, {
-  noInfo:     true,
+  noInfo: true,
   publicPath: config.output.publicPath,
-  stats:      { colors: true },
+  stats: { colors: true },
 }));
 
 app.use(webpackHotMiddleware(compiler));

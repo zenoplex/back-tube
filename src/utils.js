@@ -14,5 +14,5 @@ export const getSize = (elem) => {
     height = elem.offsetHeight;
   }
 
-  return {width, height};
+  return { width, height };
 };
