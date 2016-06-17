@@ -18,6 +18,7 @@
     "build": "npm run build:lib && npm run build:prod",
     "prepublish": "npm run clean && npm run build",
     "gh-pages": "npm run build && mkdir ghpages && cp index.html ghpages && cp -R assets ghpages && cp -R dist ghpages && gh-pages -d ghpages && rimraf ghpages",
+    "test": "npm run lint",
     "start": "node server/index.js"
   },
   "keywords": [
