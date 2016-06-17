@@ -58,13 +58,8 @@ export default class BackTube {
     this.appendYoutubeScript();
     this.setCoverColor(cover);
 
-    if (/iOS/.test(platform.os)) {
-      const img = document.createElement('img');
-      img.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
-      img.style.width = '100%';
-      img.style.height = '100%';
-      this.playerElement.appendChild(img);
-      this.resize();
+    if (/iOS|Android/.test(platform.os.family)) {
+      this.appendBackgroundImage(videoId);
     } else {
       // if API is ready then fire up player
       if (BackTube.apiReady) {
@@ -98,6 +93,15 @@ export default class BackTube {
     this.container = element.querySelector('.backtube-container');
     this.playerElement = element.querySelector(`#backtube-player-${this.__id}`);
     this.cover = element.querySelector('.backtube-cover');
+  }
+
+  appendBackgroundImage(videoId) {
+    const img = document.createElement('img');
+    img.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    this.playerElement.appendChild(img);
+    this.resize();
   }
 
   appendYoutubeScript() {
