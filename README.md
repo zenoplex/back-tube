@@ -1,6 +1,6 @@
 # back-tube
 
-[![wercker status](https://app.wercker.com/status/92bebf2e6ea7c5965e1dadcd9206e759/s "wercker status")](https://app.wercker.com/project/bykey/92bebf2e6ea7c5965e1dadcd9206e759)
+[![Build Status](https://travis-ci.org/zenoplex/back-tube.svg?branch=master)](https://travis-ci.org/zenoplex/back-tube)
 
 Based from Sean McCambridge's [jQuery tubular](http://seanmccambridge.com/tubular/) plugin.
 This plugin does not rely on jQuery.
