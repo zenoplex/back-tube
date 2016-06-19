@@ -173,7 +173,7 @@ export default class BackTube {
 
   resize() {
     const { width, height } = getSize(this.element);
-    const { aspectRatio = 16/9 } = this.options;
+    const { aspectRatio = 16 / 9 } = this.options;
 
     let w;
     let h;
