@@ -21,9 +21,12 @@ export type PlayerSettings = {
   quality?: 'highres' | 'hd1080' | 'hd720' | 'large' | 'medium' | 'small' | 'default'
 };
 
-export type Options = {
-  aspectRatio: number,
-  videoId: ?string,
+export interface DefaultOptions {
+  aspectRatio?: number,
   cover?: string,
-  playerSettings: PlayerSettings,
-};
+  playerSettings?: PlayerSettings,
+}
+
+export interface Options extends DefaultOptions {
+  videoId: string,
+}
