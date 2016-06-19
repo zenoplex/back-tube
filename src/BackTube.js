@@ -3,14 +3,12 @@
 import { getSize } from './utils';
 import merge from 'lodash.merge';
 import platform from 'platform';
-import type { Options } from './types/options';
-
+import type { DefaultOptions, Options } from 'types/Options';
 
 export default class BackTube {
 
-  static defaults: Options = {
+  static defaults: DefaultOptions = {
     aspectRatio: 16 / 9,
-    videoId: null,
     cover: 'rgba(0,0,0, .4)',
 
     playerSettings: {
@@ -46,22 +44,25 @@ export default class BackTube {
   options: Options;
   cover: HTMLElement;
 
-  constructor(element: HTMLElement = document.body, options: ?Object = {}) {
-    const win = window;
+  constructor(element: HTMLElement = document.body, options: Options) {
+    if (!options.videoId) { throw new Error('videoId must be specified'); }
 
     this.element = element;
     this.options = merge(BackTube.defaults, options);
 
-    const { videoId, cover } = this.options;
+    this.init();
+  }
 
-    if (!videoId) { throw new Error('videoId must be specified'); }
+  init() {
+    const win = window;
+    const { videoId, cover } = this.options;
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
-    this.setCoverColor(cover);
+    if (cover) this.setCoverColor(cover);
 
     if (/iOS|Android/.test(platform.os.family)) {
-      this.appendBackgroundImage(videoId);
+      if (videoId) this.appendBackgroundImage(videoId);
     } else {
       // if API is ready then fire up player
       if (BackTube.apiReady) {
@@ -140,22 +141,27 @@ export default class BackTube {
   }
 
   onPlayerReady() {
-    const { playerSettings: { start, quality, volume } } = this.options;
+    const { playerSettings } = this.options;
+    if (playerSettings) {
+      const { start, quality, volume } = playerSettings;
+      if (volume) this.player.setVolume(volume);
+      if (quality) this.player.setPlaybackQuality(quality);
+      if (start !== undefined) this.player.seekTo(start);
+    }
 
-    this.player.setVolume(volume);
-    this.player.setPlaybackQuality(quality);
-    this.player.seekTo(start);
     this.player.playVideo();
   }
 
   onPlayerStateChange(state: Object) {
-    const { playerSettings: { start, loop } } = this.options;
-
-    // If loop then player will seek to start position and loop
-    // Standard loop option will not work as intend.
-    // https://developers.google.com/youtube/player_parameters#loop
-    if (state.data === 0 && loop) {
-      this.player.seekTo(start);
+    const { playerSettings } = this.options;
+    if (playerSettings) {
+      const { start = 0, loop } = playerSettings;
+      // If loop then player will seek to start position and loop
+      // Standard loop option will not work as intend.
+      // https://developers.google.com/youtube/player_parameters#loop
+      if (state.data === 0 && loop) {
+        this.player.seekTo(start);
+      }
     }
   }
 
@@ -167,7 +173,8 @@ export default class BackTube {
 
   resize() {
     const { width, height } = getSize(this.element);
-    const { aspectRatio } = this.options;
+    const { aspectRatio = 16/9 } = this.options;
+
     let w;
     let h;
 
