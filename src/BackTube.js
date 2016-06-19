@@ -144,9 +144,10 @@ export default class BackTube {
     const { playerSettings } = this.options;
     if (playerSettings) {
       const { start, quality, volume } = playerSettings;
-      if (volume) this.player.setVolume(volume);
+
+      if (volume != null) this.player.setVolume(volume);
       if (quality) this.player.setPlaybackQuality(quality);
-      if (start !== undefined) this.player.seekTo(start);
+      if (start != null) this.player.seekTo(start);
     }
 
     this.player.playVideo();
@@ -155,12 +156,14 @@ export default class BackTube {
   onPlayerStateChange(state: Object) {
     const { playerSettings } = this.options;
     if (playerSettings) {
-      const { start = 0, loop } = playerSettings;
+      const { start, loop } = playerSettings;
+      const seek = start != null ? start : 0;
+
       // If loop then player will seek to start position and loop
       // Standard loop option will not work as intend.
       // https://developers.google.com/youtube/player_parameters#loop
       if (state.data === 0 && loop) {
-        this.player.seekTo(start);
+        this.player.seekTo(seek);
       }
     }
   }
