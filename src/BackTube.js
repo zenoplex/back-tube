@@ -144,9 +144,10 @@ export default class BackTube {
     const { playerSettings } = this.options;
     if (playerSettings) {
       const { start, quality, volume } = playerSettings;
-      if (volume) this.player.setVolume(volume);
+
+      if (volume != null) this.player.setVolume(volume);
       if (quality) this.player.setPlaybackQuality(quality);
-      if (start !== undefined) this.player.seekTo(start);
+      if (start != null) this.player.seekTo(start);
     }
 
     this.player.playVideo();
