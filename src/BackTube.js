@@ -1,12 +1,15 @@
+// @flow
+
 import { getSize } from './utils';
 import merge from 'lodash.merge';
 import platform from 'platform';
+import type { DefaultOptions, Options } from 'types/Options';
 
 export default class BackTube {
 
-  static defaults = {
+  static defaults: DefaultOptions = {
     aspectRatio: 16 / 9,
-    videoId: null,
+    cover: 'rgba(0,0,0, .4)',
 
     playerSettings: {
       volume: 0, // 0 - 100
@@ -28,38 +31,38 @@ export default class BackTube {
       end: 0, // set end of the video
       quality: 'default', // small, medium, large, hd720, hd1080, highres or default
     },
-    cover: 'rgba(0,0,0, .4)',
   };
 
   // flag for YoutubeAPI ready
-  static apiReady = false;
+  static apiReady: boolean = false;
 
-  /**
-   * constructor
-   *
-   * @param element
-   * @param options
-   */
-  constructor(element = document.body, options = {}) {
-    const win = window;
+  __id: number = Date.now();
+  element: HTMLElement;
+  player: Object;
+  playerElement: HTMLElement;
+  container: HTMLElement;
+  options: Options;
+  cover: HTMLElement;
 
-    this.__id = Date.now();
+  constructor(element: HTMLElement = document.body, options: Options) {
+    if (!options.videoId) { throw new Error('videoId must be specified'); }
+
     this.element = element;
-    this.player = null;
-    this.playerElement = null;
-    this.container = null;
     this.options = merge(BackTube.defaults, options);
 
-    const { videoId, cover } = this.options;
+    this.init();
+  }
 
-    if (!videoId) { throw new Error('videoId must be specified'); }
+  init() {
+    const win = window;
+    const { videoId, cover } = this.options;
 
     this.appendContainer(this.element);
     this.appendYoutubeScript();
-    this.setCoverColor(cover);
+    if (cover) this.setCoverColor(cover);
 
     if (/iOS|Android/.test(platform.os.family)) {
-      this.appendBackgroundImage(videoId);
+      if (videoId) this.appendBackgroundImage(videoId);
     } else {
       // if API is ready then fire up player
       if (BackTube.apiReady) {
@@ -72,11 +75,7 @@ export default class BackTube {
     win.addEventListener('resize', this.resize.bind(this));
   }
 
-  /**
-   * append youtube iframe
-   */
-  appendContainer(element) {
-    const doc = document;
+  appendContainer(element: HTMLElement) {
     const container = `<div
         class="backtube-container"
         style="position: absolute; top:0; left:0; overflow:hidden; z-index:0">
@@ -84,19 +83,19 @@ export default class BackTube {
            style="width:100%; height:100%; position:absolute; z-index:1; left:0; top:0;"></div>
           <div id="backtube-player-${this.__id}" style="position:absolute;"></div>
       </div>`;
-    const div = doc.createElement('div');
+    const div: HTMLDivElement = document.createElement('div');
     div.innerHTML = container;
 
     element.style.position = 'relative'; // eslint-disable-line no-param-reassign
-    element.insertBefore(div.firstChild, this.element.firstElementChild);
+    if (div.firstChild) element.insertBefore(div.firstChild, this.element.firstElementChild);
 
     this.container = element.querySelector('.backtube-container');
     this.playerElement = element.querySelector(`#backtube-player-${this.__id}`);
     this.cover = element.querySelector('.backtube-cover');
   }
 
-  appendBackgroundImage(videoId) {
-    const img = document.createElement('img');
+  appendBackgroundImage(videoId: string) {
+    const img: HTMLImageElement = document.createElement('img');
     img.src = `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
     img.style.width = '100%';
     img.style.height = '100%';
@@ -106,11 +105,10 @@ export default class BackTube {
 
   appendYoutubeScript() {
     if (!window.YT) {
-      const doc = document;
-      const tag = doc.createElement('script');
+      const tag: HTMLScriptElement = document.createElement('script');
       tag.src = 'https://www.youtube.com/iframe_api';
-      const firstScriptTag = doc.getElementsByTagName('script')[0];
-      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+      const firstScriptTag: HTMLScriptElement = document.getElementsByTagName('script')[0];
+      if (firstScriptTag.parentNode) firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     }
   }
 
@@ -143,26 +141,31 @@ export default class BackTube {
   }
 
   onPlayerReady() {
-    const { playerSettings: { start, quality, volume } } = this.options;
+    const { playerSettings } = this.options;
+    if (playerSettings) {
+      const { start, quality, volume } = playerSettings;
+      if (volume) this.player.setVolume(volume);
+      if (quality) this.player.setPlaybackQuality(quality);
+      if (start !== undefined) this.player.seekTo(start);
+    }
 
-    this.player.setVolume(volume);
-    this.player.setPlaybackQuality(quality);
-    this.player.seekTo(start);
     this.player.playVideo();
   }
 
-  onPlayerStateChange(state) {
-    const { playerSettings: { start, loop } } = this.options;
-
-    // If loop then player will seek to start position and loop
-    // Standard loop option will not work as intend.
-    // https://developers.google.com/youtube/player_parameters#loop
-    if (state.data === 0 && loop) {
-      this.player.seekTo(start);
+  onPlayerStateChange(state: Object) {
+    const { playerSettings } = this.options;
+    if (playerSettings) {
+      const { start = 0, loop } = playerSettings;
+      // If loop then player will seek to start position and loop
+      // Standard loop option will not work as intend.
+      // https://developers.google.com/youtube/player_parameters#loop
+      if (state.data === 0 && loop) {
+        this.player.seekTo(start);
+      }
     }
   }
 
-  onPlayerError(e) {
+  onPlayerError(e: Error) {
     if (e && e.data) {
       throw new Error(`Error playing video: ${e.data}`);
     }
@@ -170,7 +173,8 @@ export default class BackTube {
 
   resize() {
     const { width, height } = getSize(this.element);
-    const { aspectRatio } = this.options;
+    const { aspectRatio = 16 / 9 } = this.options;
+
     let w;
     let h;
 
@@ -178,12 +182,12 @@ export default class BackTube {
       w = Math.ceil(height * aspectRatio);
       h = height;
       this.playerElement.style.left = `${(width - w) / 2}px`;
-      this.playerElement.style.top = 0;
+      this.playerElement.style.top = '0';
     } else {
       h = Math.ceil(width / aspectRatio);
       w = width;
 
-      this.playerElement.style.left = 0;
+      this.playerElement.style.left = '0';
       this.playerElement.style.top = `${(height - h) / 2}px`;
     }
     // update player size
@@ -194,12 +198,7 @@ export default class BackTube {
     this.container.style.height = `${height}px`;
   }
 
-  /**
-   * update cover color
-   *
-   * @param {string} color  css color
-   */
-  setCoverColor(color) {
+  setCoverColor(color: string) {
     this.cover.style.backgroundColor = color;
   }
 }

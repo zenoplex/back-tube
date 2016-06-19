@@ -1,18 +1,23 @@
-export const getSize = (elem) => {
-  const win = window;
-  const doc = document;
-  const delem = doc.documentElement;
-  const body = document.body;
-  let width;
-  let height;
+type Size = {
+  width: number,
+  height: number,
+}
 
-  if (elem === win) {
+export function getSize(element: HTMLElement): Size {
+  const win = window;
+  const doc: Document = document;
+  const delem: HTMLElement = doc.documentElement;
+  const body: HTMLBodyElement = document.body;
+  let width: number;
+  let height: number;
+
+  if (element === win) {
     width = Math.max(win.innerWidth, delem.clientWidth, body.clientWidth);
     height = Math.max(win.innerHeight, delem.clientHeight, body.clientHeight);
   } else {
-    width = elem.offsetWidth;
-    height = elem.offsetHeight;
+    width = element.offsetWidth;
+    height = element.offsetHeight;
   }
 
   return { width, height };
-};
+}
