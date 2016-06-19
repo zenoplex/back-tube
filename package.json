@@ -13,12 +13,13 @@
   "scripts": {
     "clean": "rimraf lib dist",
     "lint": "eslint .",
+    "typecheck": "flow",
     "build:lib": "babel src -d lib",
     "build:prod": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build": "npm run build:lib && npm run build:prod",
     "prepublish": "npm run clean && npm run build",
     "gh-pages": "npm run build:prod && gh-pages -d dist",
-    "test": "npm run lint",
+    "test": "npm run typecheck && npm run lint",
     "start": "node server/index.js"
   },
   "keywords": [
