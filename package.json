@@ -1,6 +1,6 @@
 {
   "name": "back-tube",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Display YouTube video as background in any element.",
   "author": "zenoplex <zenoplex@gmail.com> (http://zenoplex.jp)",
   "main": "lib/index.js",
