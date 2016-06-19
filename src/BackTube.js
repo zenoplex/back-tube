@@ -68,11 +68,11 @@ export default class BackTube {
       if (BackTube.apiReady) {
         this.onYouTubeIFrameAPIReady();
       } else if (!win.onYouTubeIframeAPIReady) {
-        win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady.bind(this);
+        win.onYouTubeIframeAPIReady = this.onYouTubeIFrameAPIReady;
       }
     }
     // add window resize event
-    win.addEventListener('resize', this.resize.bind(this));
+    win.addEventListener('resize', this.resize);
   }
 
   appendContainer(element: HTMLElement) {
@@ -112,7 +112,7 @@ export default class BackTube {
     }
   }
 
-  onYouTubeIFrameAPIReady() {
+  onYouTubeIFrameAPIReady: Function = () => {
     // set ready flag
     BackTube.apiReady = true;
 
@@ -128,9 +128,9 @@ export default class BackTube {
         videoId,
         playerVars: playerSettings,
         events: {
-          onReady: this.onPlayerReady.bind(this),
-          onStateChange: this.onPlayerStateChange.bind(this),
-          onError: this.onPlayerError.bind(this),
+          onReady: this.onPlayerReady,
+          onStateChange: this.onPlayerStateChange,
+          onError: this.onPlayerError,
         },
       });
     }
@@ -138,9 +138,9 @@ export default class BackTube {
     // playerElement reference must be set after onYouTubeIFrameAPIReady
     this.playerElement = document.getElementById(`backtube-player-${this.__id}`);
     this.resize();
-  }
+  };
 
-  onPlayerReady() {
+  onPlayerReady: Function = () => {
     const { playerSettings } = this.options;
     if (playerSettings) {
       const { start, quality, volume } = playerSettings;
@@ -151,9 +151,9 @@ export default class BackTube {
     }
 
     this.player.playVideo();
-  }
+  };
 
-  onPlayerStateChange(state: Object) {
+  onPlayerStateChange: Function = (state: Object) => {
     const { playerSettings } = this.options;
     if (playerSettings) {
       const { start, loop } = playerSettings;
@@ -166,15 +166,15 @@ export default class BackTube {
         this.player.seekTo(seek);
       }
     }
-  }
+  };
 
-  onPlayerError(e: Error) {
+  onPlayerError: Function = (e: Error) => {
     if (e && e.data) {
       throw new Error(`Error playing video: ${e.data}`);
     }
-  }
+  };
 
-  resize() {
+  resize: Function = () => {
     const { width, height } = getSize(this.element);
     const { aspectRatio = 16 / 9 } = this.options;
 
@@ -199,7 +199,7 @@ export default class BackTube {
     // update container size
     this.container.style.width = `${width}px`;
     this.container.style.height = `${height}px`;
-  }
+  };
 
   setCoverColor(color: string) {
     this.cover.style.backgroundColor = color;
